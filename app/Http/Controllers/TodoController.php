@@ -12,8 +12,7 @@ class TodoController extends Controller
 {
     public function index()
     {
-        $todos = Todo::all();
-        return $todos;        
+       return Todo::get();  
     }
 
     public function store(StoreTodoRequest $request)
@@ -21,13 +20,17 @@ class TodoController extends Controller
        return Todo::create($request->validated());
     }
 
-    public function update(StoreTodoRequest $request, Todo $todo)
+    public function update(Todo $todo)
     {
-        //
+        $todo->completed = $todo->completed ? false : true;
+        $todo->save();
+        return $todo;
+
     }
 
     public function destroy(Todo $todo)
     {
-        //
+        $todo->delete();
+        return response()->json("deleted");
     }
 }
